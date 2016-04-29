@@ -35,15 +35,16 @@ public class RootContextWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //super.configure(auth);
+        //super.configure(auth); // NO
         auth.userDetailsService(userDetailsService());
-        System.out.println("aob ok");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
-        http.formLogin().and().authorizeRequests().antMatchers("/**").denyAll();
+        http.formLogin().and().authorizeRequests()
+                .antMatchers("/foo").permitAll()
+                .antMatchers("/**").denyAll();
     }
     
 }
