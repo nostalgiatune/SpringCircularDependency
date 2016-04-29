@@ -2,6 +2,7 @@ package com.tuoppi.multipleconfigurations.config;
 
 
 import com.tuoppi.multipleconfigurations.authentication.MyUserDetailsService;
+import com.tuoppi.multipleconfigurations.dao.UserDao;
 import com.tuoppi.multipleconfigurations.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,23 +14,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Configuration
+@Configuration("websecurity")
 @EnableWebSecurity
 public class RootContextWebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
-    private UserDetailsService service;
+    private UserDao dao;
     
     @Bean @Transactional
-    /* Should wait for MethodSecurityConfig to make proxy for service, but fails */
-    public UserDetailsService userDetailsService(UserService service) {
-        return new MyUserDetailsService(service);
+    public UserDetailsService userDetailsService() {
+        return new MyUserDetailsService(dao);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         super.configure(auth);
-        auth.userDetailsService(service);
+        auth.userDetailsService(userDetailsService());
+        System.out.println("aob ok");
     }
 
     @Override

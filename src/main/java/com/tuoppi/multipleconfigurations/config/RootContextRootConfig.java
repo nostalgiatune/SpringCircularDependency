@@ -17,11 +17,4 @@ import org.springframework.context.annotation.Import;
     UserDao.class
 })
 public class RootContextRootConfig {
-    // All business components lives in this context
-    
-    /* Question is, do those imported configurations wait for RootConfig to finish
-        component scanning and giving them a context to execute their logic against
-        (making AOP proxies etc.), or are they trying to do their work on their
-        private (in this case empty) context,  which is later merged with RootConfig?
-    */
 }
